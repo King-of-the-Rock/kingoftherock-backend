@@ -45,4 +45,11 @@ class UserController
 
 		return response()->setStatusCode(200);
 	}
+
+	public function login(Request $request) {
+		$user = User::where('email', $request->email)->first();
+
+		$ok = $user !== null && Hash::check($request->password, $user->password);
+		return response()->json(["ok" => $ok]);
+	}
 }
