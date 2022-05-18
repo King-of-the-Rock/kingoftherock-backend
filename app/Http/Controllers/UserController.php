@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class UserController
@@ -11,9 +14,9 @@ class UserController
 	/**
 	 * @param Request $request
 	 *
-	 * @return JsonResponse
+	 * @return Response|JsonResponse
 	 */
-	public function register(Request $request): JsonResponse
+	public function register(Request $request)
 	{
 		$validator = Validator::make($request->all(), [
 			'email' => [
@@ -31,9 +34,15 @@ class UserController
 		]);
 		
 		if ($validator->fails()) {
-			return response()->json($validator->errors())->setStatusCode(400);
+			return response()
+				->json($validator->errors())
+				->setStatusCode(400);
 		}
 		
-		return response()->json($request->all());
+		User::create(array_merge($request->all(['email', 'username', 'password']), [
+			'password' => Hash::make($request->password),
+		]));
+
+		return response()->setStatusCode(200);
 	}
 }
