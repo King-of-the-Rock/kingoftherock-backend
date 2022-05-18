@@ -48,8 +48,17 @@ class UserController
 
 	public function login(Request $request) {
 		$user = User::where('email', $request->email)->first();
-
-		$ok = $user !== null && Hash::check($request->password, $user->password);
-		return response()->json(["ok" => $ok]);
+		// Failed login
+		if ($user == null || !Hash::check($request->password, $user->password)) {
+			return response()
+				->json([
+					'password' => [
+						'Email or password incorrect.',
+					],
+				])
+				->setStatusCode(401);
+		}
+		// Successful login
+		return response()->setStatusCode(200);
 	}
 }
