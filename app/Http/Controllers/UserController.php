@@ -15,6 +15,11 @@ class UserController extends Controller
 		return response()->json(User::all(['id', 'username']));
 	}
 
+	/**
+	 * @param User $user
+	 *
+	 * @return JsonResponse
+	 */
 	public function show(User $user)
 	{
 		return response()->json([
@@ -23,11 +28,20 @@ class UserController extends Controller
 		]);
 	}
 
+	/**
+	 * @param Request $request
+	 * @param User $user
+	 */
 	public function update(Request $request, User $user)
 	{
+		// TODO
 	}
 
+	/**
+	 * @param User $user
+	 */
 	public function delete(User $user)
 	{
+		// TODO
 	}
 }
