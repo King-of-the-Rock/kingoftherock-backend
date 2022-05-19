@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class AuthController
+class AuthController extends Controller
 {
 	/**
 	 * @param Request $request
@@ -33,24 +33,27 @@ class AuthController
 				'required',
 			],
 		]);
-		
-		if ($validator->fails()) {
+
+		if ($validator->fails())
+		{
 			return response()
 				->json($validator->errors(), 400);
 		}
-		
+
 		User::create(array_merge($request->all(['email', 'username', 'password']), [
 			'password' => Hash::make($request->password),
 		]));
 	}
 
-	public function login(Request $request) {
+	public function login(Request $request)
+	{
 		$credentials = $request->validate([
 			'email' => 'required',
 			'password' => 'required',
 		]);
-		if (Auth::attempt($credentials)) {
--			$request->session()->regenerate();
+		if (Auth::attempt($credentials))
+		{
+			-$request->session()->regenerate();
 			return;
 		}
 
