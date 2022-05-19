@@ -17,6 +17,10 @@ class UserController extends Controller
 
 	public function show(User $user)
 	{
+		return response()->json([
+			'id' => $user->id,
+			'username' => $user->username,
+		]);
 	}
 
 	public function update(Request $request, User $user)
