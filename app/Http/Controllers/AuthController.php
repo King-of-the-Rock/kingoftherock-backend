@@ -49,11 +49,8 @@ class AuthController
 			'email' => 'required',
 			'password' => 'required',
 		]);
-		$user = User::where('email', $request->email)->first();
-		if ($user && Auth::attempt($credentials)) {
-			Auth::login($user);
-			$request->session()->regenerate();
-
+		if (Auth::attempt($credentials)) {
+-			$request->session()->regenerate();
 			return;
 		}
 
