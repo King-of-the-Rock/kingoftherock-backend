@@ -22,8 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function(Request $request)
 });
 
 // Auth
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register'])
+	->name('register');
+Route::post('/login', [AuthController::class, 'login'])
+	->name('login');
 
 // Users
 Route::resource('users', UserController::class)->only([
@@ -31,4 +33,4 @@ Route::resource('users', UserController::class)->only([
 	'show',
 	'update',
 	'delete',
-])->middleware('auth');
+]);

@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
 	/**
 	 * @return JsonResponse
+	 * @throws AuthorizationException
 	 */
 	public function index(): JsonResponse
 	{
+		$this->authorize('viewAny', User::class);
+
 		return response()->json(User::all(['id', 'username']));
 	}
 
