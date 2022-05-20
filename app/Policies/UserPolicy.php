@@ -6,12 +6,17 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Auth;
 
 class UserPolicy
 {
 	use HandlesAuthorization;
 
+	/**
+	 * Determine whether the user can interact with the model.
+	 * @param User|null $user
+	 *
+	 * @return bool
+	 */
 	public function viewAny(?User $user) {
 		return isset($user);
 	}
@@ -19,77 +24,39 @@ class UserPolicy
 	/**
 	 * Determine whether the user can view the model.
 	 *
-	 * @param \App\Models\User $user
-	 * @param \App\Models\User $model
+	 * @param User|null $user
+	 * @param User $model
 	 *
 	 * @return Response|bool
 	 */
 	public function view(?User $user, User $model)
 	{
-		throw new AuthorizationException;
-	}
-
-	/**
-	 * Determine whether the user can create models.
-	 *
-	 * @param \App\Models\User $user
-	 *
-	 * @return Response|bool
-	 */
-	public function create(User $user)
-	{
-		//
+		return isset($user);
 	}
 
 	/**
 	 * Determine whether the user can update the model.
 	 *
-	 * @param \App\Models\User $user
-	 * @param \App\Models\User $model
+	 * @param User $user
+	 * @param User $model
 	 *
 	 * @return Response|bool
 	 */
 	public function update(User $user, User $model)
 	{
-		//
+		return $user->id === $model->id;
 	}
 
 	/**
 	 * Determine whether the user can delete the model.
 	 *
-	 * @param \App\Models\User $user
-	 * @param \App\Models\User $model
+	 * @param User $user
+	 * @param User $model
 	 *
 	 * @return Response|bool
 	 */
 	public function delete(User $user, User $model)
 	{
-		//
-	}
-
-	/**
-	 * Determine whether the user can restore the model.
-	 *
-	 * @param \App\Models\User $user
-	 * @param \App\Models\User $model
-	 *
-	 * @return Response|bool
-	 */
-	public function restore(User $user, User $model)
-	{
-		//
-	}
-
-	/**
-	 * Determine whether the user can permanently delete the model.
-	 *
-	 * @param \App\Models\User $user
-	 * @param \App\Models\User $model
-	 *
-	 * @return Response|bool
-	 */
-	public function forceDelete(User $user, User $model)
-	{
-		//
+		return $user->id == $model->id;
 	}
 }

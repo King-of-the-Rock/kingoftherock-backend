@@ -23,9 +23,12 @@ class UserController extends Controller
 	 * @param User $user
 	 *
 	 * @return JsonResponse
+	 * @throws AuthorizationException
 	 */
 	public function show(User $user)
 	{
+		$this->authorize('view', $user);
+
 		return response()->json([
 			'id' => $user->id,
 			'username' => $user->username,
