@@ -19,6 +19,7 @@ class AuthController extends Controller
 	 */
 	public function register(Request $request)
 	{
+		// TODO don't send web page for unsupported request method
 		$validator = Validator::make($request->all(), [
 			'email' => [
 				'required',
@@ -53,7 +54,7 @@ class AuthController extends Controller
 		]);
 		if (Auth::attempt($credentials))
 		{
-			-$request->session()->regenerate();
+			$request->session()->regenerate();
 			return;
 		}
 

@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,9 +38,23 @@ class Handler extends ExceptionHandler
 			], 403);
 		}
 
-		echo ("hello"); die;
+		if ($e instanceof MethodNotAllowedHttpException)
+		{
+			return response()->json([
+				'message' => sprintf("%s method not supported for this route.", $request->method()),
+			], 405);
+		}
 
-		return parent::render($request, $e);
+		// Unhandled exception
+		return response()->json(config('app.debug')
+			? [
+				'message' => $e->getMessage(),
+				'line' => $e->getLine(),
+				'trace' => $e->getTraceAsString(),
+			]
+			: [
+				'message' => 'Server encountered an unexpected problem while handling this request.',
+			]);
 	}
 
 	/**
